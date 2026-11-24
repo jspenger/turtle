@@ -1,4 +1,4 @@
-Require Import tulip.tla.TLA.
+Require Import turtle.tla.TLA.
 
 #[local] Open Scope tla_scope.
 

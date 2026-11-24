@@ -2,8 +2,8 @@ KNOWNFILES    := Makefile
 .DEFAULT_GOAL := invoke-coqmakefile-all
 
 invoke-coqmakefile-all:
-	$(MAKE) -C tulip-tla      $(MAKECMDGOALS)
-	$(MAKE) -C tulip-tla-lib  $(MAKECMDGOALS)
+	$(MAKE) -C turtle-tla      $(MAKECMDGOALS)
+	$(MAKE) -C turtle-tla-lib  $(MAKECMDGOALS)
 	$(MAKE) -C examples/01-hour-clock  $(MAKECMDGOALS)
 	$(MAKE) -C examples/02-proof-rules $(MAKECMDGOALS)
 

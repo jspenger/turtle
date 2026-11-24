@@ -1,5 +1,5 @@
--Q ../../tulip-tla tulip.tla
--Q .               tulip.examples.proofrules
+-Q ../../turtle-tla turtle.tla
+-Q .               turtle.examples.proofrules
 
 Rules.v
 RefinementRules.v

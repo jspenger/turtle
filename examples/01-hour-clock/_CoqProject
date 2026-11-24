@@ -1,4 +1,4 @@
--Q ../../tulip-tla tulip.tla
--Q .               tulip.examples.hourclock
+-Q ../../turtle-tla turtle.tla
+-Q .               turtle.examples.hourclock
 
 HourClock.v

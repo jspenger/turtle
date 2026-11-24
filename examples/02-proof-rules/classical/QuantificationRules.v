@@ -1,7 +1,7 @@
 Require Import Coq.Strings.String.
 Require Import Classical.
-Require Import tulip.tla.TLA.
-Require Import tulip.examples.proofrules.QuantificationRules.
+Require Import turtle.tla.TLA.
+Require Import turtle.examples.proofrules.QuantificationRules.
 
 #[local] Open Scope tla_scope.
 

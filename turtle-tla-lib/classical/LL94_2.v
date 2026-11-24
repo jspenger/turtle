@@ -1,6 +1,6 @@
 Require Import Classical.
-Require Import tulip.tla.TLA.
-Require Import tulip.tla.lib.LL94_2.
+Require Import turtle.tla.TLA.
+Require Import turtle.tla.lib.LL94_2.
 
 #[local] Open Scope tla_scope.
 
@@ -101,7 +101,7 @@ End ll94_2.
 (* Temporal Quantification                                                    *)
 (* ========================================================================== *)
 
-(* See `State` def in tulip.tla.lib.LL94_2 *)
+(* See `State` def in turtle.tla.lib.LL94_2 *)
 #[local] Definition State (Id Var : Type) : Type := Id -> Var.
 
 (* Not from refs *)
