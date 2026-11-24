@@ -1,3 +1,5 @@
+(* SPDX-License-Identifier: NoAssertionLicense *)
+
 Require Import turtle.tla.TLA.
 
 #[local] Open Scope tla_scope.

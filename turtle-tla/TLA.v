@@ -1,4 +1,4 @@
-Require Import PeanoNat.
+(* SPDX-License-Identifier: Apache-2.0 OR MIT *)
 
 (* ========================================================================== *)
 (* A TLA embedding in Coq based on Leslie Lamport's many works on the         *)

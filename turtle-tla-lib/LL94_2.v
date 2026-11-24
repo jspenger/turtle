@@ -1,3 +1,5 @@
+(* SPDX-License-Identifier: Apache-2.0 OR MIT *)
+
 Require Import turtle.tla.TLA.
 
 #[local] Open Scope tla_scope.

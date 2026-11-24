@@ -1,3 +1,5 @@
+(* SPDX-License-Identifier: Apache-2.0 OR MIT *)
+
 Require Import Classical.
 Require Import turtle.tla.TLA.
 Require Import turtle.tla.lib.LL94_2.
