@@ -10,9 +10,11 @@
 .*.cache
 
 .CoqMakefile.d
-.lia.cache
 CoqMakefile
 CoqMakefile.conf
+.Makefile.coq.d
+Makefile.coq
+Makefile.coq.conf
 
 *a.out
 *.o

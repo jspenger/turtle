@@ -1,13 +1,25 @@
-KNOWNFILES    := Makefile
-.DEFAULT_GOAL := invoke-coqmakefile-all
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
-invoke-coqmakefile-all:
-	$(MAKE) -C turtle-tla      $(MAKECMDGOALS)
-	$(MAKE) -C turtle-tla-lib  $(MAKECMDGOALS)
-	$(MAKE) -C examples/01-hour-clock  $(MAKECMDGOALS)
-	$(MAKE) -C examples/02-proof-rules $(MAKECMDGOALS)
+SUBDIRS := \
+	turtle-tla \
+	turtle-tla-lib \
+	examples/01-hour-clock \
+	examples/02-proof-rules
 
-.PHONY: invoke-coqmakefile-all $(KNOWNFILES)
+.PHONY: subdirs $(SUBDIRS)
 
-%: invoke-coqmakefile-all
-	@true
+.DEFAULT_GOAL := subdirs
+
+subdirs: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
+
+turtle-tla-lib : turtle-tla
+examples/01-hour-clock : turtle-tla-lib
+examples/02-proof-rules : turtle-tla-lib
+
+Makefile: ;
+
+%: subdirs
+	@:

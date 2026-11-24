@@ -1,17 +1,25 @@
-# File adapted from the Coq reference manual:
-# https://rocq-prover.org/doc/V8.9.1/refman/practical-tools/utilities.html#reusing-extending-the-generated-makefile
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
-KNOWNTARGETS  := CoqMakefile
-KNOWNFILES    := Makefile _CoqProject
-.DEFAULT_GOAL := invoke-coqmakefile
+MAKEFILE_COQ := Makefile.coq
 
-CoqMakefile: Makefile _CoqProject
-	$(COQBIN)coq_makefile -f _CoqProject -o CoqMakefile
+ifneq ($(shell command -v $(COQBIN)rocq 2>/dev/null),)
+  COQMAKEFILE := $(COQBIN)rocq makefile
+else
+  COQMAKEFILE := $(COQBIN)coq_makefile
+endif
 
-invoke-coqmakefile: CoqMakefile
-	$(MAKE) --no-print-directory -f CoqMakefile $(filter-out $(KNOWNTARGETS),$(MAKECMDGOALS))
+.PHONY: submake
 
-.PHONY: invoke-coqmakefile $(KNOWNFILES)
+.DEFAULT_GOAL := submake
 
-%: invoke-coqmakefile
-	@true
+submake: $(MAKEFILE_COQ)
+	$(MAKE) --no-print-directory -f $(MAKEFILE_COQ) $(filter-out $(MAKEFILE_COQ),$(MAKECMDGOALS))
+
+$(MAKEFILE_COQ): Makefile _CoqProject
+	$(COQMAKEFILE) -f _CoqProject -o $(MAKEFILE_COQ)
+
+Makefile: ;
+_CoqProject: ;
+
+%: submake
+	@:
