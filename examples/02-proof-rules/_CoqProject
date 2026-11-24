@@ -1,8 +1,6 @@
 -Q ../../turtle-tla turtle.tla
 -Q .               turtle.examples.proofrules
 
-Rules.v
 RefinementRules.v
 CompositionRules.v
 WellFormed.v
-classical/FairnessRules.v

@@ -78,6 +78,41 @@ Lemma LATTICE (T : Type) (wf_rel : T -> T -> Prop) (F : prop) (H : T -> prop) (G
 Proof.
 (* TODO *) Admitted.
 
+(* Some of the presented proof rules could be strengthened. This applies to
+        STL4 (for which the strengthened version is STL4_2 (Merz 2003)), TLA1,
+        TLA2, INV1, LATTICE, F2. They are currently written in the form
+        `valid A -> valid B`, and could be strengthened to
+        `valid ([]A \impl B)`. `_R1` proves that the strengthened form implies
+        the other.
+   [2]
+   > Stephan Merz. 2003. On the Logic of TLA+. Computing and Informatics. 22,
+   > 3-4 (2003), 351-379
+    *)
+
+(* STL4 (Merz, 2003) *)
+Lemma STL4_2 (F G : prop) :
+    valid (
+        [](F \impl G) \impl
+            ([]F \impl []G)).
+Proof.
+(* TODO *) Admitted.
+
+(* Note: not from references *)
+Lemma _R1 (F G : prop) :
+    valid ([]F \impl G)
+        -> valid F
+            -> valid G.
+Proof.
+(* TODO *) Admitted.
+
+(* Note: not from references *)
+Lemma _R2 (F G : prop) :
+    valid (F \impl G)
+        -> valid F
+            -> valid G.
+Proof.
+(* TODO *) Admitted.
+
 (* ========================================================================== *)
 (* The Basic Rules of TLA                                                     *)
 (* ========================================================================== *)
