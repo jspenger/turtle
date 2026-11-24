@@ -33,11 +33,11 @@ Proof. intros y _. reflexivity. Qed.
 
 (* \EE `x`: `F` *)
 Definition EExists {Id Var : Type} (x : Id) (F : property (State Id Var)) : property (State Id Var) :=
-    RefinementMapping0 (equal_up_to_x x) F.
+    ExistentialRefinementRelation (equal_up_to_x x) F.
 
 (* \AA `x`: `F` *)
 Definition FForall {Id Var : Type} (x : Id) (F : property (State Id Var)) : property (State Id Var) :=
-    CoRefinementMapping0 (equal_up_to_x x) F.
+    UniversalRefinementRelation (equal_up_to_x x) F.
 
 (* Use `\st` standing for "such that" instead of `:`. This avoids confusion
    with Coq's token `:` standing for "type of". *)

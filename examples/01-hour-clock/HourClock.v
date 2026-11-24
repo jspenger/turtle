@@ -166,7 +166,7 @@ Module HMC.
 End HMC.
 
 (* ========================================================================== *)
-(* Refinement: valid ((HMC.Spec \with r) \impl HC.Spec)                       *)
+(* Refinement: valid ((\rmap r HMC.Spec) \impl HC.Spec)                       *)
 (* ========================================================================== *)
 
 Definition r (s : HMC.State) : HC.State := 
@@ -174,21 +174,21 @@ Definition r (s : HMC.State) : HC.State :=
 
 Theorem hmc_refines_hc : 
     valid (
-        (HMC.Spec \with r) \impl HC.Spec
+        (\rmap r HMC.Spec) \impl HC.Spec
     ).
 Proof.
 (* TODO *) Admitted.
 
 Theorem hc_refines_hmc : 
     valid (
-        HC.Spec \impl (HMC.Spec \with r)
+        HC.Spec \impl (\rmap r HMC.Spec)
     ).
 Proof.
 (* TODO *) Admitted.
 
 Theorem hmc_equiv_hc : 
     valid (
-        (HMC.Spec \with r) \equiv HC.Spec
+        (\rmap r HMC.Spec) \equiv HC.Spec
     ).
 Proof.
 (* TODO *) Admitted.
@@ -199,21 +199,21 @@ Proof.
 
 Theorem fair_hmc_refines_fair_hc : 
     valid (
-        ((HMC.Spec \land HMC.F) \with r) \impl (HC.Spec \land F)
+        (\rmap r (HMC.Spec \land HMC.F)) \impl (HC.Spec \land F)
     ).
 Proof.
 (* TODO *) Admitted.
 
 Theorem fair_hc_refines_fair_hmc : 
     valid (
-        (HC.Spec \land F) \impl ((HMC.Spec \land HMC.F) \with r)
+        (HC.Spec \land F) \impl (\rmap r (HMC.Spec \land HMC.F))
     ).
 Proof.
 (* TODO *) Admitted.
 
 Theorem fair_hmc_equiv_fair_hc : 
     valid (
-        ((HMC.Spec \land HMC.F) \with r) \equiv (HC.Spec \land F)
+        (\rmap r (HMC.Spec \land HMC.F)) \equiv (HC.Spec \land F)
     ).
 Proof.
 (* TODO *) Admitted.

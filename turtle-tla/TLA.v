@@ -178,33 +178,34 @@ End tla.
 
 (* Temporal expressions (Part II). *)
 
-(* `F` \with `abstraction_function` *)
-Definition RefinementMapping {State1 State2 : Type} (abstraction_function : State1 -> State2) (F : property State1) : property State2 :=
+(* Also known as "Refinement Mapping" *)
+(* \rmap `abstraction_function` `F` *)
+Definition ExistentialRefinementMapping {State1 State2 : Type} (abstraction_function : State1 -> State2) (F : property State1) : property State2 :=
     fun beh2 =>
         exists beh1 : behavior State1,
             (util_stuttering_equivalent (fun n : nat => abstraction_function (beh1 n)) beh2)
             /\ (F beh1).
 
-(* `F` \cowith `abstraction_function` *)
-Definition CoRefinementMapping {State1 State2 : Type} (abstraction_function : State1 -> State2) (F : property State1) : property State2 :=
+(* \univ_rmap `abstraction_function` `F` *)
+Definition UniversalRefinementMapping {State1 State2 : Type} (abstraction_function : State1 -> State2) (F : property State1) : property State2 :=
     fun beh2 =>
         forall beh1 : behavior State1,
             (util_stuttering_equivalent (fun n : nat => abstraction_function (beh1 n)) beh2)
             -> (F beh1).
 
-(* `F` \with0 `abstraction_relation` *)
+(* \rrel `abstraction_relation` `F` *)
 (* This is a generalization of the "temporal existential quanitification"
-   operator. `\EE x: F` is equivalent to `F WITH0 equal_up_to_x` where
+   operator. `\EE x: F` is equivalent to `\rrel equal_up_to_x F` where
    `equal_up_to_x` is an abstraction relation that contains pairs of states
    that are equal for all variables that are not `x`. *)
-Definition RefinementMapping0 {State1 State2 : Type} (abstraction_relation : State1 -> State2 -> Prop) (F : property State1) : property State2 :=
+Definition ExistentialRefinementRelation {State1 State2 : Type} (abstraction_relation : State1 -> State2 -> Prop) (F : property State1) : property State2 :=
     fun beh2 =>
         exists beh1: behavior State1,
             (util_stuttering_equivalent0 abstraction_relation beh1 beh2)
             /\ F beh1.
 
-(* `F` \cowith0 `abstraction_relation` *)
-Definition CoRefinementMapping0 {State1 State2 : Type} (abstraction_relation : State1 -> State2 -> Prop) (F : property State1) : property State2 :=
+(* \univ_rrel `abstraction_relation` `F` *)
+Definition UniversalRefinementRelation {State1 State2 : Type} (abstraction_relation : State1 -> State2 -> Prop) (F : property State1) : property State2 :=
     fun beh2 =>
         forall beh1: behavior State1,
             (util_stuttering_equivalent0 abstraction_relation beh1 beh2)
@@ -341,18 +342,18 @@ Notation "\sf A \sub vars" :=
     (StrongFairness vars A)
     (at level 20, vars at level 0, A at level 100) : tla_scope.
 
-Notation "F \with r" :=
-    (RefinementMapping r F)
-    (at level 100, r at level 0) : tla_scope.
+Notation "\rmap f F" :=
+    (ExistentialRefinementMapping f F)
+    (at level 20, f at level 0, right associativity) : tla_scope.
 
-Notation "F \cowith r" :=
-    (CoRefinementMapping r F)
-    (at level 100, r at level 0) : tla_scope.
+Notation "\univ_rmap f F" :=
+    (UniversalRefinementMapping f F)
+    (at level 20, f at level 0, right associativity) : tla_scope.
 
-Notation "F \with0 r" :=
-    (RefinementMapping0 r F)
-    (at level 100, r at level 0) : tla_scope.
+Notation "\rrel r F" :=
+    (ExistentialRefinementRelation r F)
+    (at level 20, r at level 0, right associativity) : tla_scope.
 
-Notation "F \cowith0 r" :=
-    (CoRefinementMapping0 r F)
-    (at level 100, r at level 0) : tla_scope.
+Notation "\univ_rrel r F" :=
+    (UniversalRefinementRelation r F)
+    (at level 20, r at level 0, right associativity) : tla_scope.

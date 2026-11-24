@@ -213,10 +213,10 @@ Corollary Decomposition2 {State2 : Type} (r : State -> State2 -> Prop) (E : nat 
                 \impl (E i))) ->
     (* 2. (b) *)
     (forall i : nat,
-            valid (((E i) \land (((Ml i) \with0 r) \land (\A j \st ((\lift0 (j < i)) \impl (M j)))))
+            valid (((E i) \land ((\rrel r (Ml i)) \land (\A j \st ((\lift0 (j < i)) \impl (M j)))))
                 \impl (M i))) ->
     (* ...then *)
-    valid (((\A i \st Ml i) \with0 r) \impl (\A i \st M i)).
+    valid ((\rrel r (\A i \st Ml i)) \impl (\A i \st M i)).
 Proof.
 (* TODO *) Admitted.
 
@@ -360,17 +360,17 @@ Proof.
 (* TODO: Generalize similarly to the Decomposition theorem(s). *)
 Theorem LocalDecomposition {State2 : Type} (f : State -> State2) (E1 : prop) (E2 : property State2) (F G H : prop) :
     (* If... *)
-    valid ((E2 \land ((F \land E1) \with f))
-                \impl (G \with f)) ->
-    valid ((E2 \land (H \with f))
-                \impl (H \cowith f)) ->
+    valid ((E2 \land (\rmap f (F \land E1)))
+                \impl (\rmap f G)) ->
+    valid ((E2 \land (\rmap f H))
+                \impl (\univ_rmap f H)) ->
     valid (H
                 \impl E1) ->
-    valid ((H \with f)
+    valid ((\rmap f H)
                 \impl E2) ->
     (* ...then *)
-    valid (((F \land H) \with f)
-                \impl ((G \land H) \with f)).
+    valid ((\rmap f (F \land H))
+                \impl (\rmap f (G \land H))).
 Proof.
 (* TODO *) Admitted.
 
@@ -378,28 +378,28 @@ Proof.
 (* TODO: Generalize similarly to the Decomposition theorem(s). *)
 Theorem LocalDecomposition0 {State2 : Type} (r : State -> State2 -> Prop) (E1 : prop) (E2 : property State2) (F G H : prop) :
     (* If... *)
-    valid ((E2 \land ((F \land E1) \with0 r))
-                \impl (G \with0 r)) ->
-    valid ((E2 \land (H \with0 r))
-                \impl (H \cowith0 r)) ->
+    valid ((E2 \land (\rrel r (F \land E1)))
+                \impl (\rrel r G)) ->
+    valid ((E2 \land (\rrel r H))
+                \impl (\univ_rrel r H)) ->
     valid (H
                 \impl E1) ->
-    valid ((H \with0 r)
+    valid ((\rrel r H)
                 \impl E2) ->
     (* ...then *)
-    valid (((F \land H) \with0 r)
-                \impl ((G \land H) \with0 r)).
+    valid ((\rrel r (F \land H))
+                \impl (\rrel r (G \land H))).
 Proof.
 (* TODO *) Admitted.
 
 (* Not from refs *)
 #[local] Example ex_02 {State2 : Type} (f : State -> State2) (F G H : prop) :
-    valid ((F \with f)
-                \impl (G \with f)) ->
-    valid ((H \with f)
-                \impl (H \cowith f)) ->
-    valid (((F \land H) \with f)
-                \impl ((G \land H) \with f)).
+    valid ((\rmap f F)
+                \impl (\rmap f G)) ->
+    valid ((\rmap f H)
+                \impl (\univ_rmap f H)) ->
+    valid ((\rmap f (F \land H))
+                \impl (\rmap f (G \land H))).
 Proof.
 (* TODO *) Admitted.
 

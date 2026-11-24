@@ -172,25 +172,25 @@ Inductive WellFormedN : nat -> prop -> Prop :=
             {State1 : Type}
             (r : State1 -> State)
             (F : property State1) :
-        WellFormedN 3 (F \with r)
+        WellFormedN 3 (\rmap r F)
 
     | wf_corefinement_mapping
             {State1 : Type}
             (r : State1 -> State)
             (F : property State1) :
-        WellFormedN 3 (F \cowith r)
+        WellFormedN 3 (\univ_rmap r F)
 
     | wf_refinement_mapping0
             {State1 : Type}
             (r : State1 -> State -> Prop)
             (F : property State1) :
-        WellFormedN 3 (F \with0 r)
+        WellFormedN 3 (\rrel r F)
 
     | wf_corefinement_mapping0
             {State1 : Type}
             (r : State1 -> State -> Prop)
             (F : property State1) :
-        WellFormedN 3 (F \cowith0 r).
+        WellFormedN 3 (\univ_rrel r F).
 
 Definition WellFormed0 : prop -> Prop :=
     WellFormedN 0.
