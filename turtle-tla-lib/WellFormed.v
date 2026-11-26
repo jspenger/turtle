@@ -1,4 +1,4 @@
-(* SPDX-License-Identifier: NoAssertionLicense *)
+(* SPDX-License-Identifier: Apache-2.0 OR MIT *)
 
 Require Import turtle.tla.TLA.
 
@@ -176,7 +176,7 @@ Inductive WellFormedN : nat -> prop -> Prop :=
             (F : property State1) :
         WellFormedN 3 (\rmap r F)
 
-    | wf_corefinement_mapping
+    | wf_universal_refinement_mapping
             {State1 : Type}
             (r : State1 -> State)
             (F : property State1) :
@@ -188,7 +188,7 @@ Inductive WellFormedN : nat -> prop -> Prop :=
             (F : property State1) :
         WellFormedN 3 (\rrel r F)
 
-    | wf_corefinement_mapping0
+    | wf_universal_refinement_mapping0
             {State1 : Type}
             (r : State1 -> State -> Prop)
             (F : property State1) :
@@ -217,7 +217,7 @@ Definition WellFormed : prop -> Prop :=
 (* ========================================================================== *)
 
 (* TODO: change from "Kanonical" to another name. "Canonical" is a Coq
-   keyword. *)
+   keyword so it should be avoided. *)
 
 (* TLA formula in canonical form as a finite conjunction of `I`, `[][N]_v`, and
    `F`, where `I` is an "initial-state predicate", `N` is a 
@@ -237,7 +237,6 @@ Inductive Kanonical : prop -> Prop :=
             {V : Type}
             (F : prop)
             (e : State -> V) :
-            (* TODO: change the order of arguments for `WeakFairness` and `StrongFairness` from `e F` to `F e` *)
         WellFormed2 F -> Kanonical (\wf F \sub e)
     | kacl_sf
             {V : Type}
