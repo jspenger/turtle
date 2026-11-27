@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: NoAssertionLicense
+
+-Q ../../turtle-tla            turtle.tla
+-R deps/sail-riscv/build/rocq  Riscv
+-Q .                           turtle.compat.sail.riscv
+
+source.v
+exec.v
+notation.v
+prelude.v
+prelude_all.v
+lib/ascii.v
+lib/conf/preserve_conf.v
+lib/unsafe/extern/abi.v
+lib/unsafe/extern/extern.v
+lib/unsafe/extern/glu.v
+lib/unsafe/extern/prelude.v
+lib/unsafe/extern/prelude_all.v
+lib/unsafe/libc/stdint.v
+lib/unsafe/libc/stdio.v
+lib/unsafe/libc/stdlib.v
+lib/unsafe/libc/sys_random.v
+lib/unsafe/libc/libc.v
+lib/unsafe/libc/prelude.v
+lib/unsafe/libc/prelude_all.v

@@ -3,6 +3,7 @@
 SUBDIRS := \
 	turtle-tla \
 	turtle-tla-lib \
+	turtle-compat/sail-riscv \
 	examples/01-turtle-tla-hour-clock \
 	examples/02-turtle-tla-proof-rules
 
@@ -16,6 +17,7 @@ $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
 turtle-tla-lib : turtle-tla
+turtle-compat/sail-riscv : turtle-tla
 examples/01-turtle-tla-hour-clock : turtle-tla-lib
 examples/02-turtle-tla-proof-rules : turtle-tla-lib
 
