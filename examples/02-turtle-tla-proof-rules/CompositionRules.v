@@ -2,6 +2,7 @@
 
 Require Import turtle.tla.TLA.
 Require Import turtle.tla.TLA_2.
+Require Import turtle.gen.closed.
 
 #[local] Open Scope tla_scope.
 
@@ -24,7 +25,8 @@ Require Import turtle.tla.TLA_2.
 Lemma property_implies_closure {State : Type} (F : property State) :
     valid (F \impl util_closure F).
 Proof.
-(* TODO *) Admitted.
+    exact (closed.property_implies_closure F).
+Qed.
 
 Lemma machine_closed_def_iff {State : Type} (F L : property State) :
     util_machine_closed F L <->
@@ -40,7 +42,23 @@ Lemma machine_closed_def_iff {State : Type} (F L : property State) :
                 (util_tts F beh n) ->
                     (util_tts (F \land L) beh n)).
 Proof.
-(* TODO *) Admitted.
+    split.
+    - intros Hmc.
+        assert (Hmono : forall (beh : behavior State) (n : nat),
+                    util_tts F beh n -> util_tts (F \land L) beh n).
+        { intros beh n. apply (util_tts_mono F (F \land L) beh n).
+            intros c HF. exact (proj2 (Hmc c) HF). }
+        split; [| exact Hmono].
+        intros beh HC. apply (proj1 (Hmc beh)).
+        intros n. exact (Hmono beh n (HC n)).
+    - intros [Hsafe Hcompl] beh. split.
+        + intros HC. apply (Hsafe beh). intros n.
+            exact (util_tts_mono (F \land L) F beh n
+                       (fun c HFL => property_implies_closure F c (proj1 HFL))
+                       (HC n)).
+        + intros HF n.
+            exact (Hcompl beh n (property_implies_closure F beh HF n)).
+Qed.
 
 (* ========================================================================== *)
 (* Composition                                                                *)
@@ -67,7 +85,10 @@ Theorem Decomposition0 (E Ml M : nat -> prop) :
     (* ...then *)
     valid ((\A i \st Ml i) \impl (\A i \st M i)).
 Proof.
-(* TODO *) Admitted.
+    intros Hyp1 Hyp2 beh HMl i.
+    induction (Nat.lt_wf_0 i) as [i _ IH].
+    exact (Hyp2 i beh (conj (Hyp1 i beh IH) (conj (HMl i) IH))).
+Qed.
 
 (* Acyclic composition of `M0` and `M1` where `M1` depends on the specification 
    of `M0` (and not the implementation `Ml0` of `M0`). *)
@@ -77,7 +98,10 @@ Proof.
         valid ((M0 \land Ml1)  \impl  M1)  ->
             valid ((Ml0 \land Ml1)  \impl  (M0 \land M1)).
 Proof.
-(* TODO *) Admitted.
+    intros H0 H1 beh [HMl0 HMl1].
+    assert (HM0 : M0 beh) by exact (H0 beh HMl0).
+    split; [exact HM0 | exact (H1 beh (conj HM0 HMl1))].
+Qed.
 
 (* Not from refs *)
 (* Acyclic form of the `Decomposition` theorem with structure defined over
@@ -97,7 +121,10 @@ Corollary Decomposition1 (dep : nat -> nat -> Prop) (E Ml M : nat -> prop) :
     (* ...then *)
     valid ((\A i \st Ml i) \impl (\A i \st M i)).
 Proof.
-(* TODO *) Admitted.
+    intros Hwf Hyp1 Hyp2 beh HMl i.
+    induction (Hwf i) as [i _ IH].
+    exact (Hyp2 i beh (conj (Hyp1 i beh IH) (conj (HMl i) IH))).
+Qed.
 
 (* Not from refs *)
 (* Refinement form of the `Decomposition` theorem (cf.
@@ -115,7 +142,11 @@ Corollary Decomposition2 {State2 : Type} (r : State -> State2 -> Prop) (E : nat 
     (* ...then *)
     valid ((\rrel r (\A i \st Ml i)) \impl (\A i \st M i)).
 Proof.
-(* TODO *) Admitted.
+    intros Hyp1 Hyp2 beh [c [Hsc HMl]] i.
+    induction (Nat.lt_wf_0 i) as [i _ IH].
+    apply (Hyp2 i beh). split; [exact (Hyp1 i beh IH) |].
+    split; [exists c; split; [exact Hsc | exact (HMl i)] | exact IH].
+Qed.
 
 (* Not from refs *)
 (* Acyclic form of the `Composition` theorem with strengthening of hypothesis
@@ -133,7 +164,11 @@ Theorem Composition0 (E M : prop) (E_ M_ : nat -> prop) :
     valid ((\A j \st ((E_ j) \impl (M_ j)))
         \impl (E \impl M)).
 Proof.
-(* TODO *) Admitted.
+    intros Hyp1 Hyp2 beh Hspec HE.
+    apply (Hyp2 beh). split; [exact HE |].
+    intros i. induction (Nat.lt_wf_0 i) as [i _ IH].
+    exact (Hspec i (Hyp1 beh i (conj HE IH))).
+Qed.
 
 (* Not from refs *)
 (* Acyclic form of the `GeneralDecomposition` theorem with strengthening of
@@ -154,7 +189,10 @@ Theorem GeneralDecomposition0 (E : prop) (E_ Ml_ M_ : nat -> prop) :
     valid ((E \land (\A j \st Ml_ j))
         \impl (\A j \st M_ j)).
 Proof.
-(* TODO *) Admitted.
+    intros Hyp1 Hyp2b beh [HE HMl] i.
+    induction (Nat.lt_wf_0 i) as [i _ IH].
+    exact (Hyp2b i beh (conj (Hyp1 i beh (conj HE IH)) (conj (HMl i) IH))).
+Qed.
 
 (* Not from refs *)
 (* Acyclic form of the `GeneralDecomposition` theorem with structure defined
@@ -176,7 +214,10 @@ Corollary GeneralDecomposition1 (dep : nat -> nat -> Prop) (E : prop) (E_ Ml_ M_
     valid ((E \land (\A j \st Ml_ j))
         \impl (\A j \st M_ j)).
 Proof.
-(* TODO *) Admitted.
+    intros Hwf Hyp1 Hyp2b beh [HE HMl] i.
+    induction (Hwf i) as [i _ IH].
+    exact (Hyp2b i beh (conj (Hyp1 i beh (conj HE IH)) (conj (HMl i) IH))).
+Qed.
 
 (* Not from refs *)
 (* TODO: Generalize similarly to the Decomposition theorem(s). *)
@@ -194,7 +235,12 @@ Theorem LocalDecomposition {State2 : Type} (f : State -> State2) (E1 : prop) (E2
     valid ((\rmap f (F \land H))
                 \impl (\rmap f (G \land H))).
 Proof.
-(* TODO *) Admitted.
+    intros HFG HH HE1 HE2 beh2 (beh1 & Hs & HF & HH1).
+    assert (Hw : (\rmap f H) beh2) by (exists beh1; split; assumption).
+    destruct (HFG beh2 (conj (HE2 beh2 Hw) (ex_intro _ beh1 (conj Hs (conj HF (HE1 beh1 HH1)))))) as (beh1' & Hs' & HG).
+    exists beh1'. split; [exact Hs' |]. split; [exact HG |].
+    exact (HH beh2 (conj (HE2 beh2 Hw) Hw) beh1' Hs').
+Qed.
 
 (* Not from refs *)
 (* TODO: Generalize similarly to the Decomposition theorem(s). *)
@@ -212,7 +258,12 @@ Theorem LocalDecomposition0 {State2 : Type} (r : State -> State2 -> Prop) (E1 : 
     valid ((\rrel r (F \land H))
                 \impl (\rrel r (G \land H))).
 Proof.
-(* TODO *) Admitted.
+    intros HFG HH HE1 HE2 beh2 (beh1 & Hs & HF & HH1).
+    assert (Hw : (\rrel r H) beh2) by (exists beh1; split; assumption).
+    destruct (HFG beh2 (conj (HE2 beh2 Hw) (ex_intro _ beh1 (conj Hs (conj HF (HE1 beh1 HH1)))))) as (beh1' & Hs' & HG).
+    exists beh1'. split; [exact Hs' |]. split; [exact HG |].
+    exact (HH beh2 (conj (HE2 beh2 Hw) Hw) beh1' Hs').
+Qed.
 
 (* Not from refs *)
 #[local] Example ex_02 {State2 : Type} (f : State -> State2) (F G H : prop) :
@@ -223,6 +274,11 @@ Proof.
     valid ((\rmap f (F \land H))
                 \impl (\rmap f (G \land H))).
 Proof.
-(* TODO *) Admitted.
+    intros HFG HH. apply (LocalDecomposition f (\lift0 True) (\lift0 True) F G H).
+    - intros beh2 [_ (beh1 & Hs & HF & _)]. apply HFG. exists beh1. split; assumption.
+    - intros beh2 [_ Hw]. exact (HH beh2 Hw).
+    - intros beh1 _. exact I.
+    - intros beh2 _. exact I.
+Qed.
 
 End rules.

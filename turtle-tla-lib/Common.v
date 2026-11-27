@@ -1,6 +1,7 @@
 (* SPDX-License-Identifier: Apache-2.0 OR MIT *)
 
 Require Import turtle.tla.TLA.
+Require Import turtle.gen.base.
 
 #[local] Open Scope tla_scope.
 
@@ -12,12 +13,14 @@ Context {State : Type}.
 Lemma util_suffix_0 (beh : behavior State) :
     util_suffix beh 0 = beh.
 Proof.
-(* TODO *) Admitted.
+    reflexivity.
+Qed.
 
 Lemma util_beh_eq (b c : behavior State) :
     (forall n : nat, b n = c n) ->
         util_stuttering_equivalent b c.
 Proof.
-(* TODO *) Admitted.
+    exact (stuttering_equivalent_pointwise b c).
+Qed.
 
 End common.

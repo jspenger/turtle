@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: NoAssertionLicense
+
+-Q ../turtle-tla                                           turtle.tla
+-Q ../turtle-compat/sail-riscv                             turtle.compat.sail.riscv
+-R ../turtle-compat/sail-riscv/deps/sail-riscv/build/rocq  Riscv
+-Q .                                                      turtle.gen
+
+bits.v
+eval.v
+frame.v
+reg.v
+ev.v
+step.v
+tla.v
+load.v
+init.v
+word.v
+base.v
+stutter.v
+closed.v

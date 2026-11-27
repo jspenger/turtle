@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: NoAssertionLicense
 
 -Q ../../turtle-tla turtle.tla
+-Q ../../turtle-gen turtle.gen
 -Q .               turtle.examples.proofrules
 
 RefinementRules.v

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 -Q ../turtle-tla turtle.tla
+-Q ../turtle-gen turtle.gen
 -Q .            turtle.tla.lib
 
 Common.v

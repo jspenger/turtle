@@ -1,6 +1,7 @@
 (* SPDX-License-Identifier: Apache-2.0 OR MIT *)
 
 Require Import turtle.tla.TLA.
+Require Import turtle.gen.base.
 
 #[local] Open Scope tla_scope.
 
@@ -55,7 +56,10 @@ Notation "'\AA' x \st F" :=
 Lemma EE1 {Id Var : Type} (x : Id) (F : property (State Id Var)) :
     valid (F \impl (\EE x \st F)).
 Proof.
-(* TODO *) Admitted.
+    intros beh HF. exists beh.
+    split; [| exact HF].
+    apply stuttering_equivalent0_pointwise. intros n. apply equal_up_to_x_refl.
+Qed.
 
 (* E2 from [1] *)
 Lemma EE2 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
@@ -63,14 +67,18 @@ Lemma EE2 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
         valid (F \impl G) ->
             valid ((\EE x \st F) \impl G).
 Proof.
-(* TODO *) Admitted.
+    intros Hfree HFG beh [beh1 [Hse HF]].
+    apply Hfree. exists beh1. split; [exact Hse | exact (HFG beh1 HF)].
+Qed.
 
 (* Not from refs *)
 Lemma EE3 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
     valid (F \impl G)
         -> valid ((\EE x \st F) \impl (\EE x \st G)).
 Proof.
-(* TODO *) Admitted.
+    intros HFG beh [beh1 [Hse HF]].
+    exists beh1. split; [exact Hse | exact (HFG beh1 HF)].
+Qed.
 
 (* Not from refs *)
 Lemma EE4 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
@@ -78,13 +86,24 @@ Lemma EE4 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
         valid ((\EE x \st (F \land G))
             \equiv (F \land (\EE x \st G))).
 Proof.
-(* TODO *) Admitted.
+    intros Hfree beh. split.
+    - intros [beh1 [Hse [HF HG]]]. split.
+        + apply Hfree. exists beh1. split; [exact Hse | exact HF].
+        + exists beh1. split; [exact Hse | exact HG].
+    - intros [HF [beh1 [Hse HG]]]. exists beh1. split; [exact Hse |].
+        split; [| exact HG]. apply Hfree. exists beh.
+        split; [| exact HF].
+        apply stuttering_equivalent0_sym; [| exact Hse].
+        intros s t Hst y Hy. exact (eq_sym (Hst y Hy)).
+Qed.
 
 (* E1 from [1] adapted to \AA *)
 Lemma FF1 {Id Var : Type} (x : Id) (F : property (State Id Var)) :
     valid ((\AA x \st F) \impl F).
 Proof.
-(* TODO *) Admitted.
+    intros beh HA. apply (HA beh).
+    apply stuttering_equivalent0_pointwise. intros n. apply equal_up_to_x_refl.
+Qed.
 
 (* E2 from [1] adapted to \AA *)
 Lemma FF2 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
@@ -92,11 +111,13 @@ Lemma FF2 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
         valid (G \impl F) ->
             valid (G \impl (\AA x \st F)).
 Proof.
-(* TODO *) Admitted.
+    intros Hfree HGF beh HG beh1 Hse. exact (HGF beh1 (Hfree beh HG beh1 Hse)).
+Qed.
 
 (* Not from refs *)
 Lemma FF3 {Id Var : Type} (x : Id) (F G : property (State Id Var)) :
     valid (F \impl G)
         -> valid ((\AA x \st F) \impl (\AA x \st G)).
 Proof.
-(* TODO *) Admitted.
+    intros HFG beh HA beh1 Hse. exact (HFG beh1 (HA beh1 Hse)).
+Qed.
